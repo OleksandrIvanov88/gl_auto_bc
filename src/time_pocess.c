@@ -6,7 +6,6 @@
 #include <netdb.h>
 #include <unistd.h>
 
-
 static void error_process(const char *error)
 {
     perror(error);
@@ -65,4 +64,3 @@ void set_sys_time(const time_t *ntp_time)
         error_process("ERROR!!!NTP and Sys time synchronization");
     }
 }
-

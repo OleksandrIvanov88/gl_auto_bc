@@ -4,7 +4,6 @@
 #include <string.h>
 #include <arpa/inet.h>
 
-
 static int64_t proces_time(const time_t *ntp_time)
 {
     const uint64_t NTP_TIMESTAMP_DELTA = 2208988800ull;
@@ -22,28 +21,27 @@ static void print_times(const int64_t *ntp_time)
     printf("System time is %li seconds off NTP\r\n", (sys_time - *ntp_time));
 }
 
-static int8_t compare_time(const struct tm* tm_1, const struct tm* tm_2)
+static int8_t compare_time(const struct tm *tm_1, const struct tm *tm_2)
 {
-    if(tm_1->tm_hour != tm_2->tm_hour) return 0;
-    if(tm_1->tm_min != tm_2->tm_min) return 0;
-    if(tm_1->tm_sec != tm_2->tm_sec) return 0;
+    if (tm_1->tm_hour != tm_2->tm_hour)
+        return 0;
+    if (tm_1->tm_min != tm_2->tm_min)
+        return 0;
+    if (tm_1->tm_sec != tm_2->tm_sec)
+        return 0;
 
     return 1;
 }
 
-
-
-
 void sync(void)
 {
-     time_t ntp_time = get_ntp_time("200.20.186.76", 123);
+    time_t ntp_time = get_ntp_time("200.20.186.76", 123);
     int64_t ntp_time_proc = proces_time(&ntp_time);
     print_times(&ntp_time_proc);
     printf("Synchronization...\r\n");
     set_sys_time(&ntp_time_proc);
     print_times(&ntp_time_proc);
 }
-
 
 void set_time(void)
 {
@@ -52,18 +50,18 @@ void set_time(void)
     int hh, mm, ss;
     struct tm when = {0};
     scanf("%s", cur_date);
-    sscanf(cur_date, "%d:%d:%d",&hh, &mm, &ss);
+    sscanf(cur_date, "%d:%d:%d", &hh, &mm, &ss);
     when.tm_hour = hh;
     when.tm_min = mm;
     when.tm_sec = ss;
     time_t sys_time = time(NULL);
-    struct tm *local =  localtime(&sys_time);
+    struct tm *local = localtime(&sys_time);
 
     printf("Waiting for the set time...\r\n");
     while (!compare_time(&when, local))
     {
         sys_time = time(NULL);
-        local =  localtime(&sys_time);
+        local = localtime(&sys_time);
     }
 
     time_t ntp_time = get_ntp_time("200.20.186.76", 123);
@@ -71,7 +69,6 @@ void set_time(void)
     set_sys_time(&ntp_time_proc);
     print_times(&ntp_time_proc);
 }
-
 
 void cont_sync(void)
 {
@@ -86,13 +83,12 @@ void cont_sync(void)
         char cmd[256] = {0};
         scanf("%s", cmd);
 
-        if(strcmp(cmd, "stop") == 0)
+        if (strcmp(cmd, "stop") == 0)
         {
             break;
         }
     }
 }
-
 
 void print_diff(void)
 {
