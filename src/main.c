@@ -1,12 +1,14 @@
+#include "application.h"
+
 #include <stdio.h>
 #include <string.h>
-#include "application.h"
+
 
 int main(void)
 {
 
     char input_cmd[1024] = {0};
-    do
+    while (1)
     {
         printf("\r\nEnter the option:\n\t\"sync\"- run single sync\n\t"
                "\"set_time\" - set time for the next single sync\r\n\t"
@@ -31,12 +33,15 @@ int main(void)
         {
             print_diff();
         }
-        else if (strcmp(input_cmd, "exit") != 0)
+        else if (strcmp(input_cmd, "exit") == 0)
+        {
+            break;
+        }
+        else
         {
             printf("Unknown command\r\n");
         }
-
-    } while (strcmp(input_cmd, "exit") != 0);
+    }
 
     return 0;
 }
