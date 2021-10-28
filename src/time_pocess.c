@@ -15,7 +15,7 @@ void error_handling(const char *error)
     exit(EXIT_FAILURE);
 }
 
-time_t get_ntp_time(const char *host, uint16_t port)
+uint32_t get_ntp_time(const char *host, uint16_t port)
 {
     if (NULL == host)
     {
@@ -45,15 +45,17 @@ time_t get_ntp_time(const char *host, uint16_t port)
         error_handling("ERROR!!!No connecting");
     }
 
-    const uint8_t msg[48] = {8, 0};
-    int res = write(socketdr, msg, sizeof(msg));
+    ntp_packet packet;
+    memset(&packet, 0, sizeof(packet));
+    packet.li_v_mode4 = 0b00011011; //// li =0 v=3 mode4 =3
+    int res = write(socketdr, &packet, sizeof(packet));
+
     if (res < 0)
     {
         error_handling("ERROR!!!Writing socket");
     }
 
-    uint32_t buf[1024] = {0};
-    res = read(socketdr, buf, sizeof(buf));
+    res = read(socketdr, &packet, sizeof(packet));
     if (res < 0)
     {
         error_handling("ERROR!!!Reading from socket");
@@ -61,7 +63,7 @@ time_t get_ntp_time(const char *host, uint16_t port)
 
     close(socketdr);
 
-    return (time_t)buf[4];
+    return packet.txTm_s;
 }
 
 void set_sys_time(const time_t *set_time)

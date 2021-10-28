@@ -7,7 +7,7 @@
 #include <arpa/inet.h>
 #include <errno.h>
 
-static const char* HOST = "200.20.186.76";
+static const char *HOST = "200.20.186.76";
 static const uint16_t PORT = 123;
 
 static int64_t proces_time(const time_t *ntp_time)

@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 
-
 int main(void)
 {
 
@@ -15,6 +14,7 @@ int main(void)
                "\"cont_sync\" - run continuously sync\r\n\t"
                "\"print_diff\" - display difference of NTP and system time\r\n\t"
                "\"exit\" - stop the service\r\n");
+
         scanf("%s", input_cmd);
 
         if (strcmp(input_cmd, "sync") == 0)
